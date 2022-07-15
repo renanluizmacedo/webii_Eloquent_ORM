@@ -51,47 +51,6 @@
             </div>
             <div class="row">
                 <div class="col" >
-                    <div class="input-group mb-3">
-                        <span class="input-group-text bg-secondary text-white">Área</span>
-                        <select 
-                            name="area"
-                            class="form-select @if($errors->has('area')) is-invalid @endif"
-                        >
-                            @foreach ($areas as $item)
-                                <option value="{{$item->id}}" @if($item->id == $data->area_id) selected="true" @endif>
-                                    {{ $item->nome }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @if($errors->has('area'))
-                            <div class='invalid-feedback'>
-                                {{ $errors->first('area') }}
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col" >
-                    <div class="input-group mb-3">
-                        <span class="input-group-text bg-secondary text-white">Ano Letivo</span>
-                        <input 
-                            type="number" 
-                            class="form-control @if($errors->has('ano_letivo')) is-invalid @endif" 
-                            name="ano_letivo" 
-                            value="{{$data->ano}}"
-                            readonly
-                        />
-                        @if($errors->has('ano_letivo'))
-                            <div class='invalid-feedback'>
-                                {{ $errors->first('ano_letivo') }}
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col" >
                     <div class="form-floating mb-3">
                         <input 
                             type="number"
@@ -106,27 +65,6 @@
                         @if($errors->has('carga'))
                             <div class='invalid-feedback'>
                                 {{ $errors->first('carga') }}
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col" >
-                    <div class="form-floating mb-3">
-                        <input 
-                            type="number"
-                            min="1" 
-                            min="4" 
-                            class="form-control @if($errors->has('periodo')) is-invalid @endif" 
-                            name="periodo" 
-                            placeholder="Período do Curso"
-                            value="{{$data->periodo}}"
-                        />
-                        <label for="periodo">Período do Curso</label>
-                        @if($errors->has('periodo'))
-                            <div class='invalid-feedback'>
-                                {{ $errors->first('periodo') }}
                             </div>
                         @endif
                     </div>

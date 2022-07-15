@@ -22,6 +22,7 @@
             <tr>
                 <th scope="col">NOME</th>
                 <th scope="col" class="d-none d-md-table-cell">EIXO</th>
+                <th scope="col">STATUS</th>
                 <th scope="col">AÇÕES</th>
             </tr>
             </thead>
@@ -30,6 +31,7 @@
                     <tr>
                         <td>{{ $item->nome }}</td>
                         <td class="d-none d-md-table-cell">{{ $item->eixo->nome }}</td>
+                        <td class="d-none d-md-table-cell">@if($item->ativo == 1) ATIVO @else INATIVO @endif</td>
                         <td>
                             <a href= "{{ route('professores.edit', $item->id) }}" class="btn btn-success">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FFF" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">

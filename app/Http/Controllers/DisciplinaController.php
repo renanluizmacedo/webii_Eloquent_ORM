@@ -5,26 +5,32 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Disciplina;
 use App\Models\Curso;
+use App\Models\Eixo;
+
 use Illuminate\Support\Facades\Log;
 
-class DisciplinaController extends Controller {
-    
-    public function index() {
+class DisciplinaController extends Controller
+{
 
-        
+    public function index()
+    {
+
+
         $data = Disciplina::with(['curso'])
             ->orderBy('nome')->get();
         // return json_encode($data);
-        return view('disciplinas.index', compact(['data']));   
+        return view('disciplinas.index', compact(['data']));
     }
 
-    public function create() {
+    public function create()
+    {
 
         $cursos = Curso::orderBy('nome')->get();
-        return view('disciplinas.create', compact(['cursos']));   
+        return view('disciplinas.create', compact(['cursos']));
     }
 
-    public function validation(Request $request) {
+    public function validation(Request $request)
+    {
 
         $rules = [
             'nome' => 'required|max:100|min:5',
@@ -40,24 +46,25 @@ class DisciplinaController extends Controller {
         $request->validate($rules, $msgs);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
-    
+        self::validation($request);
 
         $total = Disciplina::where('nome', mb_strtoupper($request->nome, 'UTF-8'))
             ->where('curso_id', $request->curso)
             ->count();
-        
-        if($total > 0) {
+
+        if ($total > 0) {
             $msg = "Disciplina";
             $link = "disciplinas.index";
             return view('erros.duplicado', compact(['msg', 'link']));
         }
 
         $curso = Curso::find($request->curso);
-        if(isset($curso)) {
+        if (isset($curso)) {
             $obj = new Disciplina();
-            $obj->nome = mb_strtoupper($request->nome, 'UTF-8');   
+            $obj->nome = mb_strtoupper($request->nome, 'UTF-8');
             $obj->carga = $request->carga;
             $obj->curso()->associate($curso);
             $obj->save();
@@ -69,32 +76,34 @@ class DisciplinaController extends Controller {
         return view('erros.id', compact(['msg', 'link']));
     }
 
-    public function show($id) { }
+    public function show($id)
+    {
+    }
 
-    public function edit($id) {
-        
+    public function edit($id)
+    {
         $cursos = Curso::orderBy('nome')->get();
         $data = Disciplina::find($id);
-        
-        if(isset($data)) {
+
+        if (isset($data)) {
             return view('disciplinas.edit', compact(['data', 'cursos']));
-        }
-        else {
+        } else {
             $msg = "Disciplina";
             $link = "disciplinas.index";
             return view('erros.id', compact(['msg', 'link']));
         }
     }
 
-    public function update(Request $request, $id) {
-        
+    public function update(Request $request, $id)
+    {
+
         self::validation($request);
 
         $total = Disciplina::where('nome', mb_strtoupper($request->nome, 'UTF-8'))
             ->where('curso_id', $request->curso)
             ->count();
-        
-        if($total > 0) {
+
+        if ($total > 0) {
             $msg = "Disciplina";
             $link = "disciplinas.index";
             return view('erros.duplicado', compact(['msg', 'link']));
@@ -103,8 +112,8 @@ class DisciplinaController extends Controller {
         $curso = Curso::find($request->curso);
         $obj = Disciplina::find($id);
 
-        if(isset($obj) && isset($curso)) {
-            $obj->nome = mb_strtoupper($request->nome, 'UTF-8');   
+        if (isset($obj) && isset($curso)) {
+            $obj->nome = mb_strtoupper($request->nome, 'UTF-8');
             $obj->carga = $request->carga;
             $obj->curso()->associate($curso);
             $obj->save();
@@ -114,22 +123,21 @@ class DisciplinaController extends Controller {
         $msg = "Disciplina e/ou Curso e/ou Área do Conhecimento";
         $link = "disciplinas.index";
         return view('erros.id', compact(['msg', 'link']));
-
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
 
         $obj = Disciplina::find($id);
-        
-        if(isset($obj)) {
+
+        if (isset($obj)) {
             $obj->delete();
-        }
-        else {
+        } else {
             $msg = "Disciplina";
             $link = "disciplinas.index";
             return view('erros.id', compact(['msg', 'link']));
         }
-        
+
         return redirect()->route('disciplinas.index');
     }
 }

@@ -31,9 +31,11 @@
                         <td scope="col" class="text-center">
                             <select name="PROFESSOR_ID_SELECTED[]" class="form-select" class="form-control">
                                 @foreach ($profs as $item)
-                                <option value="{{$item->id}}" @if($item->id == old('profs')) selected="true" @endif>
-                                    {{ $item->nome }}
-                                </option>
+                                    @if($item->ativo == 1)
+                                        <option value="{{$item->id}}" @if($item->id == old('profs')) selected="true" @endif>
+                                            {{ $item->nome }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </td>

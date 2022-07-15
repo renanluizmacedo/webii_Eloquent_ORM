@@ -9,6 +9,18 @@
         <div class="container my-3">
             <h3 class="display-7 text-secondary"><b>Alterar Professor</b></h3>
             <div class="row">
+                <div class="col mb-3">
+                    <div class="form-check form-check-inline p-0 m-0">
+                        <input class="btn-check" type="radio" name="radio" id="ativo" value="1" @if($data->ativo == '1') checked @endif >
+                        <label class="btn btn-outline-success" for="ativo">ATIVO</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="btn-check" type="radio" name="radio" id="inativo" value="0" @if($data->ativo == '0') checked @endif >
+                        <label class="btn btn-outline-danger" for="inativo">INATIVO</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control @if($errors->has('nome')) is-invalid @endif" name="nome" placeholder="Nome" value="{{$data->nome}}" />

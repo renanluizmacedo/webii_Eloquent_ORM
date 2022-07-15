@@ -63,15 +63,16 @@ class ProfessorController extends Controller {
             return view('erros.duplicado', compact(['msg', 'link']));
         }
 
+
         $eixo = Eixo::find($request->eixo);
         if(isset($eixo)) {
 
-            // Cria o Professor
             $obj = new Professor();
             $obj->nome = mb_strtoupper($request->nome, 'UTF-8');   
             $obj->email = mb_strtolower($request->email, 'UTF-8');
             $obj->siape = $request->siape;
-            $obj->ativo = 1;
+            $obj->ativo = $request->radio;
+
 
             $obj->eixo()->associate($eixo);
             $obj->save();

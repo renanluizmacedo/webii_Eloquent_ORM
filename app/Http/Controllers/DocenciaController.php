@@ -32,7 +32,6 @@ class DocenciaController extends Controller
     {
 
 
-
         $ids_prof = $request->PROFESSOR_ID_SELECTED;
         $disciplina = $request->DISCIPLINA;
 

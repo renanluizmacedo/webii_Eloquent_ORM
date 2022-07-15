@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Professor;
 use App\Models\Eixo;
 
+use function PHPUnit\Framework\isNull;
 
 class ProfessorController extends Controller
 {
@@ -13,37 +14,31 @@ class ProfessorController extends Controller
     public function index()
     {
 
-        $data = Professor::with(['eixo'])->orderBy('nome')->get();
-        // return json_encode($data);
+        $data = Professor::with(['eixo' => function ($q) {
+            $q->withTrashed();
+        }])->orderBy('nome')->get();
+
         return view('professores.index', compact(['data']));
     }
 
     public function create()
     {
-
         $eixos = Eixo::orderBy('nome')->get();
-        // return json_encode($data);
         return view('professores.create', compact(['eixos']));
     }
 
-    public function validation(Request $request, $type)
+    public function validation(Request $request)
     {
 
-        if ($type == 0) {
-            $rules = [
-                'nome' => 'required|max:100|min:5',
-                'email' => 'required|unique:professors',
-                'siape' => 'required|max:7|min:7',
-                'eixo' => 'required',
-            ];
-        } else {
-            $rules = [
-                'nome' => 'required|max:100|min:5',
-                'email' => 'required',
-                'siape' => 'required|max:7|min:7',
-                'eixo' => 'required',
-            ];
-        }
+        $rules = [
+            'nome' => 'required|max:100|min:5',
+            'email' => 'required|unique:professors',
+            'siape' => 'required|max:7|min:7',
+            'eixo' => 'required',
+            'radio' => 'required',
+
+        ];
+
         $msgs = [
             "required" => "O preenchimento do campo [:attribute] é obrigatório!",
             "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
@@ -57,18 +52,10 @@ class ProfessorController extends Controller
     public function store(Request $request)
     {
 
-        $total = Professor::where('nome', mb_strtoupper($request->nome, 'UTF-8'))
-            ->where('siape', $request->siape)
-            ->count();
-
-        if ($total > 0) {
-            $msg = "Professor";
-            $link = "professores.index";
-            return view('erros.duplicado', compact(['msg', 'link']));
-        }
-
+        Self::validation($request);
 
         $eixo = Eixo::find($request->eixo);
+
         if (isset($eixo)) {
 
             $obj = new Professor();
@@ -82,10 +69,6 @@ class ProfessorController extends Controller
             $obj->save();
             return redirect()->route('professores.index');
         }
-
-        $msg = "Eixo e/ou Tipo Usuário";
-        $link = "professores.index";
-        return view('erros.id', compact(['msg', 'link']));
     }
 
     public function show($id)
@@ -96,18 +79,35 @@ class ProfessorController extends Controller
     {
 
         $eixos = Eixo::orderBy('nome')->get();
-        $data = Professor::with(['eixo'])->find($id);
+        $data = Professor::with(['eixo' => function ($q) {
+            $q->withTrashed();
+        }])->find($id);
+
+
         if (isset($data)) {
             return view('professores.edit', compact(['data', 'eixos']));
-        } else {
-            $msg = "Professor";
-            $link = "professores.index";
-            return view('erros.id', compact(['msg', 'link']));
         }
     }
 
     public function update(Request $request, $id)
     {
+
+
+        $rules = [
+            'nome' => 'required|max:100|min:5',
+            'email' => 'required',
+            'siape' => 'required',
+            'radio' => 'required',
+            'eixo' => 'required',
+
+        ];
+        $msgs = [
+            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
+        ];
+
+        $request->validate($rules, $msgs);
 
         $eixo = Eixo::find($request->eixo);
         $obj_prof = Professor::find($id);
@@ -120,6 +120,8 @@ class ProfessorController extends Controller
             $obj_prof->ativo = $request->radio;
             $obj_prof->eixo()->associate($eixo);
             $obj_prof->save();
+
+
             return redirect()->route('professores.index');
         }
     }
@@ -128,11 +130,3 @@ class ProfessorController extends Controller
     {
     }
 }
-
-
-/* Nível de acesso
-    0 - Professor 
-    1 - Técnico
-    2 - Coordenador (Professor + Coordenador)
-    3 - Admin/Diretor (Professor + Diretor)
-*/

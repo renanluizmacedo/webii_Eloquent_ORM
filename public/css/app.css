@@ -1,0 +1,9 @@
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(207, 252, 10, 0.973);
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: rgba(247, 140, 0, 0.925);
+}
+.btn-create:hover{
+    background-color: #505a64;
+    border-color: #505a64;

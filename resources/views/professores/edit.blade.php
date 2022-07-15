@@ -10,14 +10,19 @@
             <h3 class="display-7 text-secondary"><b>Alterar Professor</b></h3>
             <div class="row">
                 <div class="col mb-3">
-                    <div class="form-check form-check-inline p-0 m-0">
+                    <div class="form-check form-check-inline @if($errors->has('radio')) is-invalid @endif p-0 m-0">
                         <input class="btn-check" type="radio" name="radio" id="ativo" value="1" @if($data->ativo == '1') checked @endif >
                         <label class="btn btn-outline-success" for="ativo">ATIVO</label>
                     </div>
-                    <div class="form-check form-check-inline">
+                    <div class="form-check form-check-inline @if($errors->has('radio')) is-invalid @endif">
                         <input class="btn-check" type="radio" name="radio" id="inativo" value="0" @if($data->ativo == '0') checked @endif >
                         <label class="btn btn-outline-danger" for="inativo">INATIVO</label>
                     </div>
+                    @if($errors->has('radio'))
+                    <div class='invalid-feedback'>
+                        {{ $errors->first('radio') }}
+                    </div>
+                    @endif
                 </div>
             </div>
             <div class="row">
@@ -62,13 +67,14 @@
             <div class="row">
                 <div class="col">
                     <div class="input-group mb-3">
-                        <span class="input-group-text bg-secondary text-white">Eixo</span>
+                        <span class="input-group-text bg-dark text-white">Eixo</span>
                         <select name="eixo" class="form-select @if($errors->has('eixo')) is-invalid @endif">
                             @foreach ($eixos as $item)
                             <option value="{{$item->id}}" @if($item->id == $data->eixo_id) selected="true" @endif>
                                 {{ $item->nome }}
                             </option>
                             @endforeach
+
                         </select>
                         @if($errors->has('eixo'))
                         <div class='invalid-feedback'>
@@ -80,7 +86,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="{{route('professores.index')}}" class="btn btn-secondary btn-block align-content-center">
+                    <a href="{{route('professores.index')}}" class="btn btn-dark btn-block align-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
                             <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z" />
                         </svg>

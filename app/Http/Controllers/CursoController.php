@@ -15,7 +15,10 @@ class CursoController extends Controller
      */
     public function index()
     {
-        $data = Curso::with(['eixo'])->orderBy('nome')->get();
+        $data = Curso::with(['eixo' => function ($q) {
+            $q->withTrashed();
+        }])->orderBy('nome')->get();
+
         return view('cursos.index', compact(['data']));
     }
 
@@ -89,6 +92,22 @@ class CursoController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $rules = [
+            'nome' => 'required|max:100|min:5',
+            'sigla' => 'required',
+            'tempo' => 'required',
+            'eixo' => 'required',
+
+        ];
+        $msgs = [
+            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
+        ];
+
+        $request->validate($rules, $msgs);
+
         $eixo = Eixo::find($request->eixo);
         $obj = Curso::find($id);
         if (isset($eixo) && isset($obj)) {

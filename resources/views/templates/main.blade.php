@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
     <title>SisColetivos - Sistema de Suporte aos Coletivos Pedagógicos</title>
 
     <style>
@@ -16,7 +18,7 @@
 </head>
 
 <body>
-    <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-secondary">
+    <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
         <div class="container-fluid">
             <a href="{{route('index')}}" class="navbar-brand ms-sm-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-clipboard2-pulse-fill" viewBox="0 0 16 16">

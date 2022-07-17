@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Professor;
 use App\Models\Eixo;
+use App\Models\Docencia;
 
-use function PHPUnit\Framework\isNull;
 
 class ProfessorController extends Controller
 {
@@ -31,9 +31,9 @@ class ProfessorController extends Controller
     {
 
         $rules = [
-            'nome' => 'required|max:100|min:5',
-            'email' => 'required|unique:professors',
-            'siape' => 'required|max:7|min:7',
+            'nome' => 'required|max:100|min:10',
+            'email' => 'required|max:250|min:15|unique:professors',
+            'siape' => 'required|max:10|min:8',
             'eixo' => 'required',
             'radio' => 'required',
 
@@ -63,10 +63,10 @@ class ProfessorController extends Controller
             $obj->email = mb_strtolower($request->email, 'UTF-8');
             $obj->siape = $request->siape;
             $obj->ativo = $request->radio;
-
-
             $obj->eixo()->associate($eixo);
+
             $obj->save();
+            
             return redirect()->route('professores.index');
         }
     }
@@ -83,7 +83,6 @@ class ProfessorController extends Controller
             $q->withTrashed();
         }])->find($id);
 
-
         if (isset($data)) {
             return view('professores.edit', compact(['data', 'eixos']));
         }
@@ -94,11 +93,11 @@ class ProfessorController extends Controller
 
 
         $rules = [
-            'nome' => 'required|max:100|min:5',
-            'email' => 'required',
-            'siape' => 'required',
-            'radio' => 'required',
+            'nome' => 'required|max:100|min:10',
+            'email' => 'required|max:250|min:15|',
+            'siape' => 'required|max:10|min:8',
             'eixo' => 'required',
+            'radio' => 'required',
 
         ];
         $msgs = [
@@ -119,6 +118,7 @@ class ProfessorController extends Controller
             $obj_prof->siape = $request->siape;
             $obj_prof->ativo = $request->radio;
             $obj_prof->eixo()->associate($eixo);
+
             $obj_prof->save();
 
 

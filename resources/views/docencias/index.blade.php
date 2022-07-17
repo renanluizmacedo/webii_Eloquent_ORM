@@ -8,10 +8,11 @@
 </div>
 <div class="row mb-3">
     <div class="col">
-        <table class="table align-middle caption-top table-striped" id="tabela">
+        <table class="table align-middle caption-top  table-dark table-striped" id="tabela">
+
             <caption>Tabela de <b>Disciplinas / Professores</b></caption>
             <thead>
-                <tr>
+                <tr class="header-table">
                     <th scope="col" class="text-center">Disciplina</th>
                     <th scope="col" class="text-center">Professor</th>
                 </tr>
@@ -20,30 +21,30 @@
                 <form action="{{ route('docencias.store') }}" method="POST">
                     @csrf
                     @foreach($disciplinas as $disciplina)
-                        <tr>
-                            <td scope="col" class="text-center col-md-6 ">
-                                <div class="input-group mb-3">
-                                    <input type="hidden" readonly class="form-control-plaintext" name="DISCIPLINA[]" value="{{$disciplina->id}}">
-                                    {{$disciplina->nome}}
-                                </div>
-                            </td>
-                            <td scope="col" class="text-center">
-                                <select name="PROFESSOR_ID_SELECTED[]" class="form-select @if($errors->has('PROFESSOR_ID_SELECTED')) is-invalid @endif" class="form-control ">
-                                    @foreach ($profs as $item)
-                                        @if($item->ativo == 1)
-                                        <option value="{{$item->id}}" @if($item->id == old('profs')) selected="true" @endif>
-                                            {{ $item->nome }}
-                                        </option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                                @if($errors->has('PROFESSOR_ID_SELECTED'))
-                                    <div class='invalid-feedback'>
-                                        {{ $errors->first('PROFESSOR_ID_SELECTED') }}
-                                    </div>
+                    <tr>
+                        <td scope="col" class="text-center col-md-6 ">
+                            <div class="input-group mb-3">
+                                <input type="hidden" readonly class="form-control-plaintext" name="DISCIPLINA[]" value="{{$disciplina->id}}">
+                                {{$disciplina->nome}}
+                            </div>
+                        </td>
+                        <td scope="col" class="text-center">
+                            <select name="PROFESSOR_ID_SELECTED[]" class="form-select @if($errors->has('PROFESSOR_ID_SELECTED')) is-invalid @endif" class="form-control ">
+                                @foreach ($profs as $item)
+                                @if($item->ativo == 1)
+                                <option value="{{$item->id}}" @if($item->id == old('profs')) selected="true" @endif>
+                                    {{ $item->nome }}
+                                </option>
                                 @endif
-                            </td>
-                        </tr>
+                                @endforeach
+                            </select>
+                            @if($errors->has('PROFESSOR_ID_SELECTED'))
+                            <div class='invalid-feedback'>
+                                {{ $errors->first('PROFESSOR_ID_SELECTED') }}
+                            </div>
+                            @endif
+                        </td>
+                    </tr>
                     @endforeach
             </tbody>
         </table>

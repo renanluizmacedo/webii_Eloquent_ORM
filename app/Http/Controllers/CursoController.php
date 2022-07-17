@@ -94,9 +94,9 @@ class CursoController extends Controller
     {
 
         $rules = [
-            'nome' => 'required|max:100|min:5',
-            'sigla' => 'required',
-            'tempo' => 'required',
+            'nome' => 'required|max:50|min:10',
+            'sigla' => 'required|max:8,|min:2',
+            'tempo' => 'required|max:2|min:1',
             'eixo' => 'required',
 
         ];

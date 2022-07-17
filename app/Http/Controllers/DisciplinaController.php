@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Disciplina;
 use App\Models\Curso;
-use App\Models\Eixo;
+use App\Models\Docencia;
 
 use Illuminate\Support\Facades\Log;
 
@@ -33,8 +33,8 @@ class DisciplinaController extends Controller
     {
 
         $rules = [
-            'nome' => 'required|max:100|min:5',
-            'carga' => 'required',
+            'nome' => 'required|max:100|min:10',
+            'carga' => 'required|max:12|min:1',
             'curso' => 'required',
         ];
         $msgs = [
@@ -51,16 +51,6 @@ class DisciplinaController extends Controller
 
         self::validation($request);
 
-        $total = Disciplina::where('nome', mb_strtoupper($request->nome, 'UTF-8'))
-            ->where('curso_id', $request->curso)
-            ->count();
-
-        if ($total > 0) {
-            $msg = "Disciplina";
-            $link = "disciplinas.index";
-            return view('erros.duplicado', compact(['msg', 'link']));
-        }
-
         $curso = Curso::find($request->curso);
         if (isset($curso)) {
             $obj = new Disciplina();
@@ -68,16 +58,19 @@ class DisciplinaController extends Controller
             $obj->carga = $request->carga;
             $obj->curso()->associate($curso);
             $obj->save();
+
             return redirect()->route('disciplinas.index');
         }
-
-        $msg = "Curso e/ou Área do Conhecimento";
-        $link = "disciplinas.index";
-        return view('erros.id', compact(['msg', 'link']));
     }
 
     public function show($id)
     {
+        $doc = Docencia::with(['professor'])
+            ->where('disciplina_id', '=', $id)->get()->toArray();
+
+
+        dd($doc);
+        return view('disciplinas.show', compact(['doc']));
     }
 
     public function edit($id)
@@ -87,10 +80,6 @@ class DisciplinaController extends Controller
 
         if (isset($data)) {
             return view('disciplinas.edit', compact(['data', 'cursos']));
-        } else {
-            $msg = "Disciplina";
-            $link = "disciplinas.index";
-            return view('erros.id', compact(['msg', 'link']));
         }
     }
 
@@ -99,15 +88,6 @@ class DisciplinaController extends Controller
 
         self::validation($request);
 
-        $total = Disciplina::where('nome', mb_strtoupper($request->nome, 'UTF-8'))
-            ->where('curso_id', $request->curso)
-            ->count();
-
-        if ($total > 0) {
-            $msg = "Disciplina";
-            $link = "disciplinas.index";
-            return view('erros.duplicado', compact(['msg', 'link']));
-        }
 
         $curso = Curso::find($request->curso);
         $obj = Disciplina::find($id);
@@ -116,13 +96,11 @@ class DisciplinaController extends Controller
             $obj->nome = mb_strtoupper($request->nome, 'UTF-8');
             $obj->carga = $request->carga;
             $obj->curso()->associate($curso);
+
             $obj->save();
+
             return redirect()->route('disciplinas.index');
         }
-
-        $msg = "Disciplina e/ou Curso e/ou Área do Conhecimento";
-        $link = "disciplinas.index";
-        return view('erros.id', compact(['msg', 'link']));
     }
 
     public function destroy($id)
@@ -132,12 +110,7 @@ class DisciplinaController extends Controller
 
         if (isset($obj)) {
             $obj->delete();
-        } else {
-            $msg = "Disciplina";
-            $link = "disciplinas.index";
-            return view('erros.id', compact(['msg', 'link']));
         }
-
         return redirect()->route('disciplinas.index');
     }
 }

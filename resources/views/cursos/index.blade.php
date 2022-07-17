@@ -16,10 +16,10 @@
 </div>
 <div class="row">
     <div class="col">
-        <table class="table align-middle caption-top table-striped">
+        <table class="table align-middle caption-top  table-dark table-striped">
             <caption>Tabela de <b>Cursos</b></caption>
             <thead>
-            <tr>
+            <tr class="header-table">
                 <th scope="col">NOME</th>
                 <th scope="col" class="d-none d-md-table-cell">SIGLA</th>
                 <th scope="col">AÇÕES</th>

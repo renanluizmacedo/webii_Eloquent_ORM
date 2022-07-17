@@ -7,3 +7,7 @@
 .btn-create:hover{
     background-color: #505a64;
     border-color: #505a64;
+}
+.header-table>th{
+    color: rgba(207, 252, 10, 0.973);
+}

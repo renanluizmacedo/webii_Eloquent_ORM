@@ -9,7 +9,7 @@ class Docencia extends Model {
     
     use HasFactory;
 
-    protected $fillable = ['professor_id','disciplina_id','ano'];
+    protected $fillable = ['professor_id','disciplina_id'];
 
     public function disciplina() {
         return $this->belongsTo('App\Models\Disciplina');

@@ -76,7 +76,10 @@ class ProfessorController extends Controller
         $doc = Docencia::with(['disciplina'])
             ->where('professor_id', '=', $id)->get();
 
+        foreach($doc as $d){
 
+        }
+        
         return view('professores.show', compact(['doc']));
     }
 

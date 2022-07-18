@@ -46,9 +46,9 @@ class DocenciaController extends Controller
         $ids_prof = $request->PROFESSOR_ID_SELECTED;
         $disciplina = $request->DISCIPLINA;
 
-        $doc = new Docencia();
 
-        for ($i = 0; $i < count($ids_prof); $i++) {
+        for ($i = 0; $i < count($request->DISCIPLINA); $i++) {
+            $doc = new Docencia();
             $doc->professor_id = $ids_prof[$i];
             $doc->disciplina_id = $disciplina[$i];
             $doc->save();

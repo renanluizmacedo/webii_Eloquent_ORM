@@ -66,7 +66,7 @@ class DisciplinaController extends Controller
     public function show($id)
     {
         $doc = Docencia::with(['professor'])
-            ->where('disciplina_id', '=', $id)->get();
+            ->where('disciplina_id', '=', $id)->distinct()->get(['professor_id']);
 
         return view('disciplinas.show', compact(['doc']));
     }

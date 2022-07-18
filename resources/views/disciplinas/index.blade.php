@@ -10,7 +10,7 @@
         <!-- Utiliza o componente "datalist" criado -->
         <x-datalistDisciplinas :header="['NOME', 'CURSO', 'AÇÕES']" 
         :data="$data" 
-        :hide="[ true, true, true]" />
+        :hide="[ false, true, false]" />
 
     </div>
 

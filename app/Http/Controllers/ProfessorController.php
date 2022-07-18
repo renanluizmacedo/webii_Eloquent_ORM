@@ -66,13 +66,18 @@ class ProfessorController extends Controller
             $obj->eixo()->associate($eixo);
 
             $obj->save();
-            
+
             return redirect()->route('professores.index');
         }
     }
 
     public function show($id)
     {
+        $doc = Docencia::with(['disciplina'])
+            ->where('professor_id', '=', $id)->get();
+
+
+        return view('professores.show', compact(['doc']));
     }
 
     public function edit($id)

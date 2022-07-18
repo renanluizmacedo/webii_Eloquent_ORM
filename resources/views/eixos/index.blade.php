@@ -10,7 +10,7 @@
         <!-- Utiliza o componente "datalist" criado -->
         <x-datalistEixos :header="['NOME', 'AÇÕES']" 
         :data="$data" 
-        :hide="[ true, false]" />
+        :hide="[ false, false]" />
 
     </div>
 

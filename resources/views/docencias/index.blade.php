@@ -31,11 +31,11 @@
                         <td scope="col" class="text-center">
                             <select name="PROFESSOR_ID_SELECTED[]" class="form-select @if($errors->has('PROFESSOR_ID_SELECTED')) is-invalid @endif" class="form-control ">
                                 @foreach ($profs as $item)
-                                @if($item->ativo == 1)
-                                <option value="{{$item->id}}" @if($item->id == old('profs')) selected="true" @endif>
-                                    {{ $item->nome }}
-                                </option>
-                                @endif
+                                    @if($item->ativo == 1)
+                                    <option value="{{$item->id}}" @if($item->id == old('profs')) selected="true" @endif>
+                                        {{ $item->nome }}
+                                    </option>
+                                    @endif
                                 @endforeach
                             </select>
                             @if($errors->has('PROFESSOR_ID_SELECTED'))

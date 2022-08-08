@@ -14,11 +14,11 @@ class CreateDocenciasTable extends Migration
     public function up()
     {
         Schema::create('docencias', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('professor_id');
             $table->foreign('professor_id')->references('id')->on('professors');
             $table->unsignedBigInteger('disciplina_id');
             $table->foreign('disciplina_id')->references('id')->on('disciplinas');
-            $table->primary(['professor_id', 'disciplina_id']);
             $table->timestamps();
         });
     }

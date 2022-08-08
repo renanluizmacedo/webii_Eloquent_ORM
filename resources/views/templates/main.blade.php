@@ -68,6 +68,7 @@
                             <span class="ps-1">Componentes Curriculares</span>
                         </a>
                         <ul class="dropdown-menu">
+                            <li class="nav-item ps-2 me-3"><a href="{{route('eixos.index')}}" class="dropdown-item ">Eixos</a></li>
                             <li class="nav-item ps-2 me-3"><a href="{{route('cursos.index')}}" class="dropdown-item ">Cursos</a></li>
                             <li class="nav-item ps-2 me-3"><a href="{{route('disciplinas.index')}}" class="dropdown-item">Disciplinas</a></li>
                         </ul>

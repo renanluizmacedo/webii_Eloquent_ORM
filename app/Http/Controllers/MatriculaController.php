@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Curso;
 use App\Models\Aluno;
 use App\Models\Disciplina;
-
+use App\Models\Matricula;
 use Illuminate\Http\Request;
 
 class MatriculaController extends Controller
@@ -37,7 +36,26 @@ class MatriculaController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $id_aluno = $request->aluno;
+        $disciplina = $request->disciplina;
+
+
+        if (isset($disciplina)) {
+            for ($i = 0; $i < count($request->disciplina); $i++) {
+
+                Matricula::where('disciplina_id', '=', $disciplina[$i])->where('aluno_id', '=', $id_aluno)->delete();
+
+                $doc = new Matricula();
+
+                $doc->aluno_id = $id_aluno;
+                $doc->disciplina_id = $disciplina[$i];
+
+                $doc->save();
+            }
+        }
+
+
+        return redirect()->route('alunos.index');
     }
 
     /**

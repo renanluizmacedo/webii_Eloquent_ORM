@@ -15,13 +15,15 @@ use App\Http\Controllers\CursoController;
 |
 */
 
-Route::get('/', function () { return view('index'); })->name('index');
+Route::get('/', function () {
+    return view('index');
+})->name('index');
 
 
 Route::resource('/eixos', 'EixoController');
 Route::resource('/cursos', 'CursoController');
 Route::resource('/disciplinas', 'DisciplinaController');
 Route::resource('/professores', 'ProfessorController');
+Route::resource('/alunos', 'AlunoController');
+
 Route::resource('/docencias', 'DocenciaController');
-
-

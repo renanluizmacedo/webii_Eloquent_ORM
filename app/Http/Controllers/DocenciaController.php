@@ -46,16 +46,21 @@ class DocenciaController extends Controller
         $ids_prof = $request->PROFESSOR_ID_SELECTED;
         $disciplina = $request->DISCIPLINA;
 
+
         for ($i = 0; $i < count($request->DISCIPLINA); $i++) {
 
             $disciplina = Disciplina::find($disciplina[$i]);
             $professor = Professor::find($ids_prof[$i]);
 
-            if (isset($disciplina) && isset($professor)) {
-                $vinculo_dis = Docencia::where('disciplina_id', $disciplina[$i]);
-                $vinculo_dis = Docencia::where('disciplina_id', $disciplina[$i]);
 
-                if(isset($vinculo)) { $vinculo->delete(); }
+            if (isset($disciplina) && isset($professor)) {
+
+                $vinculo = Docencia::where('disciplina_id', $disciplina->id)->where('professor_id', $professor->id)->get();
+
+                if (isset($vinculo)) {
+                    Docencia::destroy($disciplina->id,$professor->id);
+                }
+                
                 $doc = new Docencia();
 
                 $doc->disciplina()->associate($disciplina);

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Curso;
+use App\Models\Aluno;
+
 use Illuminate\Http\Request;
 
 class AlunoController extends Controller
@@ -13,8 +16,11 @@ class AlunoController extends Controller
      */
     public function index()
     {
-        return view('alunos.index');
+        $data = Aluno::with(['curso' => function ($q) {
+            $q->withTrashed();
+        }])->orderBy('nome')->get();
 
+        return view('alunos.index', compact(['data']));
     }
 
     /**
@@ -24,7 +30,8 @@ class AlunoController extends Controller
      */
     public function create()
     {
-        //
+        $cursos = Curso::orderBy('nome')->get();
+        return view('alunos.create', compact(['cursos']));
     }
 
     /**
@@ -33,9 +40,40 @@ class AlunoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function validation(Request $request)
+    {
+
+        $rules = [
+            'nome' => 'required|max:100|min:10',
+            'curso' => 'required',
+
+        ];
+
+        $msgs = [
+            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
+            "unique" => "O campo [:attribute] pode ter apenas um único registro!"
+        ];
+
+        $request->validate($rules, $msgs);
+    }
     public function store(Request $request)
     {
-        //
+        Self::validation($request);
+
+        $curso = Curso::find($request->curso);
+
+        if (isset($curso)) {
+
+            $obj = new Aluno();
+            $obj->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj->curso()->associate($curso);
+
+            $obj->save();
+
+            return redirect()->route('alunos.index');
+        }
     }
 
     /**
@@ -57,7 +95,14 @@ class AlunoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cursos = Curso::orderBy('nome')->get();
+        $data = Aluno::with(['curso' => function ($q) {
+            $q->withTrashed();
+        }])->find($id);
+
+        if (isset($data)) {
+            return view('alunos.edit', compact(['data', 'cursos']));
+        }
     }
 
     /**
@@ -69,7 +114,32 @@ class AlunoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'nome' => 'required|max:100|min:10',
+            'curso' => 'required',
+
+        ];
+        $msgs = [
+            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
+            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
+            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
+        ];
+
+        $request->validate($rules, $msgs);
+
+        $curso = Curso::find($request->curso);
+        $obj_aluno = Aluno::find($id);
+
+        if (isset($curso) && isset($obj_aluno)) {
+
+            $obj_aluno->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj_aluno->curso()->associate($curso);
+
+            $obj_aluno->save();
+
+
+            return redirect()->route('alunos.index');
+        }
     }
 
     /**

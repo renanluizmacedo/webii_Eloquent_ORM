@@ -73,9 +73,9 @@ class ProfessorController extends Controller
 
     public function show($id)
     {
-        
 
-        $doc = Docencia::with(['professor','disciplina'])->get();
+
+        $doc = Docencia::with(['professor', 'disciplina'])->get();
 
         return view('professores.show', compact(['doc']));
     }

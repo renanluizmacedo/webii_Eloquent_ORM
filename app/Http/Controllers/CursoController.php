@@ -13,6 +13,7 @@ class CursoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $data = Curso::with(['eixo' => function ($q) {

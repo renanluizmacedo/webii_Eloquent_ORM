@@ -12,6 +12,7 @@ use App\Models\Docencia;
 class DocenciaController extends Controller
 {
 
+
     public function index()
     {
 

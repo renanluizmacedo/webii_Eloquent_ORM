@@ -7,6 +7,7 @@ use App\Models\Eixo;
 
 class EixoController extends Controller
 {
+
     public function index()
     {
 

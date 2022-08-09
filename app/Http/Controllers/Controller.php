@@ -9,5 +9,9 @@ use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+    public function __construct() {
+
+        $this->middleware('ControleAcesso:1');
+   }
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

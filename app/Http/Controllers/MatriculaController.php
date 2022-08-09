@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class MatriculaController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *

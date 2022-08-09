@@ -14,6 +14,7 @@ class AlunoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $data = Aluno::with(['curso' => function ($q) {

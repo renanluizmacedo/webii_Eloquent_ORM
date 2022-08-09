@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 class DisciplinaController extends Controller
 {
 
+
     public function index()
     {
 
